@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home/Home";
 import Layout from "./components/Layout/Layout";
-
-
+import Customers from "./components/Customers/Customers";
+import Transactions from "./components/Transactions/Transactions";
 
 function App() {
   let routers = createBrowserRouter([
@@ -12,17 +12,24 @@ function App() {
       element: <Layout />,
       children: [
         {
-          path:"/",
-          element:<Home/>,
+          path: "/",
+          element: <Home />,
         },
-     
+        {
+          path: "/Customers",
+          element: <Customers />,
+        },
+        {
+          path: "/Transactions",
+          element: <Transactions />,
+        },
       ],
     },
   ]);
 
   return (
     <>
-        <RouterProvider router={routers}></RouterProvider>
+      <RouterProvider router={routers}></RouterProvider>
     </>
   );
 }
