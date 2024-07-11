@@ -19,7 +19,7 @@ body{
 .text-main{
   color: var(--orange) !important;
   font-weight: 800 !important;
-  
+
 }
 .text-sub{
   color: var(--gray) !important;
@@ -97,4 +97,8 @@ body{
 
 tbody, td, tfoot, th, thead, tr{
   border: none !important;
+}
+
+.tbl{
+  padding: 15px;
 }
