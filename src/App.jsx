@@ -4,6 +4,7 @@ import Home from "./components/Home/Home";
 import Layout from "./components/Layout/Layout";
 import Customers from "./components/Customers/Customers";
 import Transactions from "./components/Transactions/Transactions";
+import AddingCustomer from "./components/AddingCustomer/AddingCustomer";
 
 function App() {
   let routers = createBrowserRouter([
@@ -22,6 +23,10 @@ function App() {
         {
           path: "/Transactions",
           element: <Transactions />,
+        },
+        {
+          path: "/AddingCustomer",
+          element: <AddingCustomer />,
         },
       ],
     },
