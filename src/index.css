@@ -19,6 +19,7 @@ body{
 .text-main{
   color: var(--orange) !important;
   font-weight: 800 !important;
+  
 }
 .text-sub{
   color: var(--gray) !important;

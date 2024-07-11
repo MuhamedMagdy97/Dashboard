@@ -4,7 +4,6 @@ function Table() {
   return (
     <>
       <div className="Table">
-        <h2 className="h4 text-sub p-3">Customer Transactions Table</h2>
         <div className="row ">
             <div className="col-md-8 ">
             <table class="table text-center ">
