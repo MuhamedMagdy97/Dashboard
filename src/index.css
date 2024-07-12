@@ -33,16 +33,16 @@ body{
       #ffcfd1 51.53%,
       #f3c6f1 90.83%
   );
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 .layout-glass {
   display: flex;
-  height: 95%;
-  width: 95%;
+  height: 97%;
+  width: 97%;
   border-radius: 2rem;
   background-color: var(--glass);
   overflow: hidden;
