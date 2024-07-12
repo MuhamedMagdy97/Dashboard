@@ -1,54 +1,82 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AddingCustomer() {
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleAddCustomer = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:4000/customers");
+    const customers = await response.json();
+
+    const newId = (customers.length + 1).toString();
+    const newCustomer = {
+      id: newId,
+      name: name,
+    };
+
+    await fetch("http://localhost:4000/customers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newCustomer),
+    });
+
+    const newTransaction = {
+      customer_id: newId,
+      amount: 0,
+      date: new Date().toISOString(),
+    };
+
+    await fetch("http://localhost:4000/transactions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTransaction),
+    });
+
+    navigate("/");
+  };
+
   return (
-    <>
-      <div className="container">
-        <h3 className="text-center text-center text-main my-3 h1">
-          Adding customer
-        </h3>
-        <div className="row mb-3 ">
-          <div className="col-md-6">
-            <div className="form mt-5 ps-5">
-              <form>
-                <div class="mb-3">
-                  <label for="name" class="form-label" id="Name">
-                    Name
-                  </label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                    aria-describedby="name"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-                <div className="btn-cont text-center">
-                  <Link
-                    className="btn btn-primary me-1 w-75 "
-                    role="button"
-                    to={"/"}
-                  >
-                    Add customer
-                  </Link>
-                </div>
-              </form>
-            </div>
+    <div className="container">
+      <h3 className="text-center text-main my-3 h1">Adding customer</h3>
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <div className="form mt-5 ps-5">
+            <form onSubmit={handleAddCustomer}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label" id="Name">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={handleInputChange}
+                  aria-describedby="name"
+                />
+              </div>
+              <div className="btn-cont text-center">
+                <button type="submit" className="btn btn-primary me-1 w-75">
+                  Add customer
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
