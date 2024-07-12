@@ -39,7 +39,7 @@ function Customers() {
               </div>
               
             </div>
-            <Table />
+            <Table showActions={true} />
           </div>
         </div>
       </div>

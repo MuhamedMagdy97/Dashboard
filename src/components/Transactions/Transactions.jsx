@@ -9,7 +9,7 @@ function Transactions() {
        <h3 className='text-center text-center text-main my-3 h1'>Transactions</h3>
       <div className="tbl">
       <h2 className="h4 text-sub p-3">Customer Transactions Table</h2>
-      <Table />
+      <Table showActions={true} />
       </div>
        </div>
     </div>

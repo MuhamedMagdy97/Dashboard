@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCustomers } from "../../Hooks/useCustomers";
 import { useTransactions } from "../../Hooks/useTransactions";
 
-function Table() {
+function Table({ showActions }) {
   const {
     data: customers,
     error: customersError,
@@ -18,18 +18,14 @@ function Table() {
   const [editId, setEditId] = useState(null); 
   const handleEdit = (id) => {
     setEditId(id);
-   
   };
 
   const handleDelete = async (customerId) => {
-   
     if (window.confirm("Are you sure you want to delete this customer?")) {
-      
       await fetch(`http://localhost:4000/customers/${customerId}`, {
         method: "DELETE",
       });
 
-      
       const customerTransactions = transactions.filter(
         (transaction) => transaction.customer_id === customerId
       );
@@ -40,7 +36,6 @@ function Table() {
       );
       await Promise.all(deletePromises);
 
-     
       refetchTransactions();
     }
   };
@@ -81,8 +76,12 @@ function Table() {
                 <th scope="col">Name</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Date</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
+                {showActions && (
+                  <>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -92,22 +91,26 @@ function Table() {
                   <td>{entry.customerName}</td>
                   <td>{entry.amount}</td>
                   <td>{new Date(entry.date).toLocaleDateString()}</td>
-                  <td>
-                    <button
-                      className="btn btn-warning"
-                      onClick={() => handleEdit(entry.id)}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-outline-danger"
-                      onClick={() => handleDelete(entry.customer_id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  {showActions && (
+                    <>
+                      <td>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handleEdit(entry.id)}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => handleDelete(entry.customer_id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
