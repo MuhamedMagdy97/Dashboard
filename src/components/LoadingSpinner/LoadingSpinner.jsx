@@ -1,9 +1,13 @@
-import React from 'react'
+// LoadingSpinner.jsx
+import React from 'react';
+import { Rings } from 'react-loader-spinner';
 
-function LoadingSpinner() {
+const LoadingSpinner = () => {
   return (
-    <div>LoadingSpinner</div>
-  )
-}
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Rings color="#00BFFF" height={80} width={80} />
+    </div>
+  );
+};
 
-export default LoadingSpinner
+export default LoadingSpinner;

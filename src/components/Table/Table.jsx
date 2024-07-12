@@ -1,15 +1,19 @@
-import React from "react";
-import { useCustomers } from "../../Hooks/useCustomers";
-import { useTransactions } from "../../Hooks/useTransactions";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useCustomers } from '../../Hooks/useCustomers';
+import { useTransactions } from '../../Hooks/useTransactions';
+import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'; // Adjust the path
 
-function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm }) {
+function Table({ showActions, searchTerm }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  
   const {
     data: customers,
     error: customersError,
     isLoading: customersLoading,
   } = useCustomers();
+
   const {
     data: transactions,
     error: transactionsError,
@@ -18,20 +22,24 @@ function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm 
   } = useTransactions();
 
   const handleEdit = (id) => {
+    setIsLoading(true);
     navigate(`/AddTrans?customerId=${id}`);
+    setIsLoading(false);
   };
 
   const handleDelete = async (transactionId) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
+      setIsLoading(true);
       await fetch(`http://localhost:4000/transactions/${transactionId}`, {
         method: "DELETE",
       });
       refetchTransactions();
+      setIsLoading(false);
     }
   };
 
-  if (customersLoading || transactionsLoading) {
-    return <div>Loading...</div>;
+  if (customersLoading || transactionsLoading || isLoading) {
+    return <LoadingSpinner />;
   }
 
   if (customersError) {
@@ -42,50 +50,14 @@ function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm 
     return <div>Error fetching transactions: {transactionsError.message}</div>;
   }
 
-  let combinedData;
-
-  if (aggregateTransactions) {
-    const aggregated = transactions.reduce((acc, transaction) => {
-      const customer = customers.find(cust => cust.id === String(transaction.customer_id));
-      if (customer) {
-        const existing = acc.find(entry => entry.customer_id === transaction.customer_id);
-        if (existing) {
-          existing.amount += transaction.amount;
-        } else {
-          acc.push({
-            customer_id: transaction.customer_id,
-            customerName: customer.name,
-            amount: transaction.amount,
-            date: transaction.date,
-            id: transaction.id,
-          });
-        }
-      }
-      return acc;
-    }, []);
-    combinedData = aggregated.sort((a, b) => Number(a.id) - Number(b.id));
-  } else {
-    combinedData = transactions.map(transaction => {
-      const customer = customers.find(cust => cust.id === String(transaction.customer_id));
-      return {
-        ...transaction,
-        customerName: customer ? customer.name : "Unknown",
-      };
-    }).sort((a, b) => Number(a.id) - Number(b.id));
-  }
-
-  // Filter the combined data based on the searchTerm
-  const filteredData = combinedData.filter(entry => {
-    if (!entry) return false;
-
-    const customerName = entry.customerName || "";
-    const amount = entry.amount !== undefined ? entry.amount.toString() : "";
-
-    const searchValue = searchTerm.toLowerCase();
-    return (
-      customerName.toLowerCase().includes(searchValue) ||
-      amount.includes(searchValue)
+  const combinedData = transactions.map((transaction) => {
+    const customer = customers.find(
+      (cust) => cust.id === String(transaction.customer_id)
     );
+    return {
+      ...transaction,
+      customerName: customer ? customer.name : "Unknown",
+    };
   });
 
   return (
@@ -95,7 +67,7 @@ function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm 
           <table className="table text-center brd-rad">
             <thead className="border">
               <tr>
-                <th scope="col">{showCustomerId ? "CustomerId" : "TransactionId"}</th>
+                <th scope="col">{showActions ? "TransactionId" : "CustomerId"}</th>
                 <th scope="col">Name</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Date</th>
@@ -108,21 +80,27 @@ function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm 
               </tr>
             </thead>
             <tbody>
-              {filteredData.map(entry => (
+              {combinedData.map((entry) => (
                 <tr key={entry.id}>
-                  <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
+                  <th scope="row">{entry.id}</th>
                   <td>{entry.customerName}</td>
                   <td>{entry.amount}</td>
                   <td>{new Date(entry.date).toLocaleDateString()}</td>
                   {showActions && (
                     <>
                       <td>
-                        <button className="btn btn-warning" onClick={() => handleEdit(entry.customer_id)}>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handleEdit(entry.customer_id)}
+                        >
                           Edit
                         </button>
                       </td>
                       <td>
-                        <button className="btn btn-outline-danger" onClick={() => handleDelete(entry.id)}>
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => handleDelete(entry.id)}
+                        >
                           Delete
                         </button>
                       </td>
