@@ -3,7 +3,7 @@ import { useCustomers } from "../../Hooks/useCustomers";
 import { useTransactions } from "../../Hooks/useTransactions";
 import { useNavigate } from "react-router-dom";
 
-function Table({ showActions, showCustomerId, aggregateTransactions }) {
+function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm }) {
   const navigate = useNavigate();
   const {
     data: customers,
@@ -42,17 +42,15 @@ function Table({ showActions, showCustomerId, aggregateTransactions }) {
     return <div>Error fetching transactions: {transactionsError.message}</div>;
   }
 
-  // Process combined data
   let combinedData;
 
   if (aggregateTransactions) {
-    // Aggregate transaction amounts by customer
     const aggregated = transactions.reduce((acc, transaction) => {
       const customer = customers.find(cust => cust.id === String(transaction.customer_id));
       if (customer) {
         const existing = acc.find(entry => entry.customer_id === transaction.customer_id);
         if (existing) {
-          existing.amount += transaction.amount; // Sum amounts
+          existing.amount += transaction.amount;
         } else {
           acc.push({
             customer_id: transaction.customer_id,
@@ -65,17 +63,29 @@ function Table({ showActions, showCustomerId, aggregateTransactions }) {
       }
       return acc;
     }, []);
-    combinedData = aggregated.sort((a, b) => Number(a.id) - Number(b.id)); // Sort by ID
+    combinedData = aggregated.sort((a, b) => Number(a.id) - Number(b.id));
   } else {
-    // Show all transactions
     combinedData = transactions.map(transaction => {
       const customer = customers.find(cust => cust.id === String(transaction.customer_id));
       return {
         ...transaction,
         customerName: customer ? customer.name : "Unknown",
       };
-    }).sort((a, b) => Number(a.id) - Number(b.id)); // Sort by ID
+    }).sort((a, b) => Number(a.id) - Number(b.id));
   }
+
+  // Filter the combined data based on the searchTerm
+  const filteredData = combinedData.filter(entry => {
+    if (!entry || !entry.customerName || !entry.amount) {
+      return false;
+    }
+
+    const searchValue = searchTerm.toLowerCase();
+    return (
+      entry.customerName.toLowerCase().includes(searchValue) ||
+      entry.amount.toString().includes(searchValue)
+    );
+  });
 
   return (
     <div className="Table vh-100">
@@ -97,7 +107,7 @@ function Table({ showActions, showCustomerId, aggregateTransactions }) {
               </tr>
             </thead>
             <tbody>
-              {combinedData.map(entry => (
+              {filteredData.map(entry => (
                 <tr key={entry.id}>
                   <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
                   <td>{entry.customerName}</td>
