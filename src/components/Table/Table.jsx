@@ -76,14 +76,15 @@ function Table({ showActions, showCustomerId, aggregateTransactions, searchTerm 
 
   // Filter the combined data based on the searchTerm
   const filteredData = combinedData.filter(entry => {
-    if (!entry || !entry.customerName || !entry.amount) {
-      return false;
-    }
+    if (!entry) return false;
+
+    const customerName = entry.customerName || "";
+    const amount = entry.amount !== undefined ? entry.amount.toString() : "";
 
     const searchValue = searchTerm.toLowerCase();
     return (
-      entry.customerName.toLowerCase().includes(searchValue) ||
-      entry.amount.toString().includes(searchValue)
+      customerName.toLowerCase().includes(searchValue) ||
+      amount.includes(searchValue)
     );
   });
 

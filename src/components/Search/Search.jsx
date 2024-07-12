@@ -1,31 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function Search({ onSearch }) {
-  const [query, setQuery] = useState('');
-
+function Search({ searchTerm, setSearchTerm }) {
   const handleChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    onSearch(value); 
+    setSearchTerm(e.target.value); // Update the search term state
   };
 
   return (
-    <div className="col-md-6">
-      <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-        <input
-          className="form-control me-2"
-          type="search"
-          placeholder="Search by Name or Amount"
-          aria-label="Search"
-          value={query}
-          onChange={handleChange}
-        />
-        <button className="btn btn-outline-success" type="submit">
-          Search
-        </button>
-      </form>
+    <div className="col-md-6 mx-auto d-flex">
+      <input
+        className="form-control me-2"
+        type="search"
+        placeholder="Search by Name or Amount"
+        aria-label="Search"
+        value={searchTerm}
+        onChange={handleChange} 
+      />
+   
     </div>
   );
 }
 
 export default Search;
+
+
