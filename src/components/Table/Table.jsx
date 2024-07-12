@@ -55,7 +55,7 @@ function Table({ showActions }) {
   });
 
   return (
-    <div className="Table">
+    <div className="Table vh-100">
       <div className="row ">
         <div className="col-md-12 ">
           <table className="table text-center brd-rad">

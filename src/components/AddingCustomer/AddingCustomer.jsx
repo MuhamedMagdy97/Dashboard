@@ -15,7 +15,14 @@ function AddingCustomer() {
     const response = await fetch("http://localhost:4000/customers");
     const customers = await response.json();
 
-    const newId = (customers.length + 1).toString();
+    // Get the highest existing numeric ID
+    const maxId = customers.reduce((max, customer) => {
+      const id = parseInt(customer.id, 10);
+      return id > max ? id : max;
+    }, 0);
+
+    // New ID will be the highest existing ID + 1
+    const newId = (maxId + 1).toString();
     const newCustomer = {
       id: newId,
       name: name,
@@ -43,12 +50,12 @@ function AddingCustomer() {
       body: JSON.stringify(newTransaction),
     });
 
-    navigate("/");
+    navigate("/customers");
   };
 
   return (
     <div className="container">
-      <h3 className="text-center text-main my-3 h1">Adding customer</h3>
+      <h3 className="text-center text-main my-3 h1">Adding Customer</h3>
       <div className="row mb-3">
         <div className="col-md-6">
           <div className="form mt-5 ps-5">
@@ -65,11 +72,12 @@ function AddingCustomer() {
                   value={name}
                   onChange={handleInputChange}
                   aria-describedby="name"
+                  required
                 />
               </div>
               <div className="btn-cont text-center">
                 <button type="submit" className="btn btn-primary me-1 w-75">
-                  Add customer
+                  Add Customer
                 </button>
               </div>
             </form>
