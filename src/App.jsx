@@ -6,6 +6,7 @@ import Customers from "./components/Customers/Customers";
 import Transactions from "./components/Transactions/Transactions";
 import AddingCustomer from "./components/AddingCustomer/AddingCustomer";
 import AddTrans from "./components/AddTrans/AddTrans";
+import Charts from "./components/Charts/Charts";
 
 function App() {
   let routers = createBrowserRouter([
@@ -32,6 +33,10 @@ function App() {
         {
           path: "/AddTrans",
           element: <AddTrans />,
+        },
+        {
+          path: "/Charts",
+          element: <Charts />,
         },
       ],
     },
