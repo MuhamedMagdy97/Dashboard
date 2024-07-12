@@ -37,7 +37,7 @@ function Customers() {
                 </button>
               </div>
             </div>
-            <Table showActions={true} />
+            <Table showActions={true} showCustomerId={true} />
           </div>
         </div>
       </div>

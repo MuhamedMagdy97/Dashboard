@@ -3,7 +3,7 @@ import { useCustomers } from "../../Hooks/useCustomers";
 import { useTransactions } from "../../Hooks/useTransactions";
 import { useNavigate } from "react-router-dom";
 
-function Table({ showActions }) {
+function Table({ showActions, showCustomerId }) {
   const navigate = useNavigate();
   const {
     data: customers,
@@ -43,7 +43,6 @@ function Table({ showActions }) {
     return <div>Error fetching transactions: {transactionsError.message}</div>;
   }
 
-  // Combine customer and transaction data
   const combinedData = transactions.map((transaction) => {
     const customer = customers.find(
       (cust) => cust.id === String(transaction.customer_id)
@@ -61,7 +60,7 @@ function Table({ showActions }) {
           <table className="table text-center brd-rad">
             <thead className="border">
               <tr>
-                <th scope="col">TransactionId</th>
+                <th scope="col">{showCustomerId ? "CustomerId" : "TransactionId"}</th>
                 <th scope="col">Name</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Date</th>
@@ -76,7 +75,7 @@ function Table({ showActions }) {
             <tbody>
               {combinedData.map((entry) => (
                 <tr key={entry.id}>
-                  <th scope="row">{entry.id}</th>
+                  <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
                   <td>{entry.customerName}</td>
                   <td>{entry.amount}</td>
                   <td>{new Date(entry.date).toLocaleDateString()}</td>
