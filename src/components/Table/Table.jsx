@@ -3,7 +3,7 @@ import { useCustomers } from "../../Hooks/useCustomers";
 import { useTransactions } from "../../Hooks/useTransactions";
 import { useNavigate } from "react-router-dom";
 
-function Table({ showActions, showCustomerId }) {
+function Table({ showActions, showCustomerId, aggregateTransactions }) {
   const navigate = useNavigate();
   const {
     data: customers,
@@ -26,7 +26,6 @@ function Table({ showActions, showCustomerId }) {
       await fetch(`http://localhost:4000/transactions/${transactionId}`, {
         method: "DELETE",
       });
-
       refetchTransactions();
     }
   };
@@ -43,20 +42,45 @@ function Table({ showActions, showCustomerId }) {
     return <div>Error fetching transactions: {transactionsError.message}</div>;
   }
 
-  const combinedData = transactions.map((transaction) => {
-    const customer = customers.find(
-      (cust) => cust.id === String(transaction.customer_id)
-    );
-    return {
-      ...transaction,
-      customerName: customer ? customer.name : "Unknown",
-    };
-  });
+  // Process combined data
+  let combinedData;
+
+  if (aggregateTransactions) {
+    // Aggregate transaction amounts by customer
+    const aggregated = transactions.reduce((acc, transaction) => {
+      const customer = customers.find(cust => cust.id === String(transaction.customer_id));
+      if (customer) {
+        const existing = acc.find(entry => entry.customer_id === transaction.customer_id);
+        if (existing) {
+          existing.amount += transaction.amount; // Sum amounts
+        } else {
+          acc.push({
+            customer_id: transaction.customer_id,
+            customerName: customer.name,
+            amount: transaction.amount,
+            date: transaction.date,
+            id: transaction.id,
+          });
+        }
+      }
+      return acc;
+    }, []);
+    combinedData = aggregated.sort((a, b) => Number(a.id) - Number(b.id)); // Sort by ID
+  } else {
+    // Show all transactions
+    combinedData = transactions.map(transaction => {
+      const customer = customers.find(cust => cust.id === String(transaction.customer_id));
+      return {
+        ...transaction,
+        customerName: customer ? customer.name : "Unknown",
+      };
+    }).sort((a, b) => Number(a.id) - Number(b.id)); // Sort by ID
+  }
 
   return (
     <div className="Table vh-100">
-      <div className="row ">
-        <div className="col-md-12 ">
+      <div className="row">
+        <div className="col-md-12">
           <table className="table text-center brd-rad">
             <thead className="border">
               <tr>
@@ -73,7 +97,7 @@ function Table({ showActions, showCustomerId }) {
               </tr>
             </thead>
             <tbody>
-              {combinedData.map((entry) => (
+              {combinedData.map(entry => (
                 <tr key={entry.id}>
                   <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
                   <td>{entry.customerName}</td>
@@ -82,18 +106,12 @@ function Table({ showActions, showCustomerId }) {
                   {showActions && (
                     <>
                       <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => handleEdit(entry.customer_id)}
-                        >
+                        <button className="btn btn-warning" onClick={() => handleEdit(entry.customer_id)}>
                           Edit
                         </button>
                       </td>
                       <td>
-                        <button
-                          className="btn btn-outline-danger"
-                          onClick={() => handleDelete(entry.id)}
-                        >
+                        <button className="btn btn-outline-danger" onClick={() => handleDelete(entry.id)}>
                           Delete
                         </button>
                       </td>

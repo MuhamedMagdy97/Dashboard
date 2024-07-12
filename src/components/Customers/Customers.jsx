@@ -5,16 +5,14 @@ import { useNavigate } from "react-router-dom";
 function Customers() {
   const navigate = useNavigate();
   const handleAddCustomer = () => {
-    navigate("/AddingCustomer"); 
+    navigate("/AddingCustomer");
   };
 
   return (
-    <div className="container Customers ">
-      <div className="row ">
-        <div className="col-md-9 ">
-          <h3 className="text-center text-main my-3 h1">
-            Customers
-          </h3>
+    <div className="container Customers">
+      <div className="row">
+        <div className="col-md-9">
+          <h3 className="text-center text-main my-3 h1">Customers</h3>
           <div className="tbl">
             <h2 className="h4 text-sub p-1">Customer Transactions Table</h2>
             <div className="row mb-3 d-flex justify-content-between align-items-end">
@@ -27,7 +25,7 @@ function Customers() {
                     aria-label="Search"
                   />
                   <button className="btn btn-outline-success" type="submit">
-                    Search 
+                    Search
                   </button>
                 </form>
               </div>
@@ -37,7 +35,7 @@ function Customers() {
                 </button>
               </div>
             </div>
-            <Table showActions={true} showCustomerId={true} />
+            <Table showActions={true} showCustomerId={true} aggregateTransactions={true} />
           </div>
         </div>
       </div>

@@ -1,20 +1,20 @@
-import React from 'react'
-import Table from '../Table/Table'
+import React from 'react';
+import Table from '../Table/Table';
 
 function Transactions() {
   return (
     <div className="container Customers vh-100">
-    <div className="row">
-       <div className="col-md-12">
-       <h3 className='text-center text-center text-main my-3 h1'>Transactions</h3>
-      <div className="tbl">
-      <h2 className="h4 text-sub p-3">Customer Transactions Table</h2>
-      <Table showActions={true} />
+      <div className="row">
+        <div className="col-md-12">
+          <h3 className='text-center text-main my-3 h1'>Transactions</h3>
+          <div className="tbl">
+            <h2 className="h4 text-sub p-3">Customer Transactions Table</h2>
+            <Table showActions={true} showCustomerId={false} aggregateTransactions={false} />
+          </div>
+        </div>
       </div>
-       </div>
     </div>
-  </div>
-)
+  );
 }
 
-export default Transactions
+export default Transactions;
