@@ -18,17 +18,37 @@ function Navbar() {
         <div className="navbar">
           <ul className="nav flex-column">
             <li className={`nav-item ${selected === "/" ? "act" : ""}`}>
-              <Link className="nav-link" to="/" onClick={() => setSelected("/")}>
+              <Link
+                className="nav-link"
+                to="/"
+                onClick={() => setSelected("/")}
+              >
                 Dashboard
               </Link>
             </li>
-            <li className={`nav-item ${selected.startsWith("/customers") ? "act" : ""}`}>
-              <Link className="nav-link" to="/customers" onClick={() => setSelected("/customers")}>
+            <li
+              className={`nav-item ${
+                selected.startsWith("/customers") ? "act" : ""
+              }`}
+            >
+              <Link
+                className="nav-link"
+                to="/customers"
+                onClick={() => setSelected("/customers")}
+              >
                 Customers
               </Link>
             </li>
-            <li className={`nav-item ${selected.startsWith("/transactions") ? "act" : ""}`}>
-              <Link className="nav-link" to="/transactions" onClick={() => setSelected("/transactions")}>
+            <li
+              className={`nav-item ${
+                selected.startsWith("/transactions") ? "act" : ""
+              }`}
+            >
+              <Link
+                className="nav-link"
+                to="/transactions"
+                onClick={() => setSelected("/transactions")}
+              >
                 Transactions
               </Link>
             </li>
