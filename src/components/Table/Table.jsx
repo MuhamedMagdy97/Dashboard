@@ -69,7 +69,7 @@ function Table({ showActions }) {
     <div className="Table">
       <div className="row">
         <div className="col-md-9">
-          <table className="table text-center">
+          <table className="table text-center brd-rad"> 
             <thead className="border">
               <tr>
                 <th scope="col">Id</th>
