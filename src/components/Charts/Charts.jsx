@@ -82,11 +82,11 @@ function Charts() {
     <div className="container">
       <div className="row">
         <div className="col-md-12 text-center mt-5">
-          <h2 className="h4 text-sub p-1">Customer Charts</h2>
+          <h2 className="h4 text-sub me-5 mb-5">Customer Charts</h2>
         </div>
       </div>
-      <div className="row">
-        <div className="col-md-9">
+      <div className="row ms-5">
+        <div className="col-md-9 ms-5">
           <table className="table">
             <thead className="text-center">
               <tr>
