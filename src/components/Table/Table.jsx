@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
-import { useCustomers } from '../../Hooks/useCustomers';
-import { useTransactions } from '../../Hooks/useTransactions';
-import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'; // Adjust the path
+import React from "react";
+import { useCustomers } from "../../Hooks/useCustomers";
+import { useTransactions } from "../../Hooks/useTransactions";
+import { useNavigate } from "react-router-dom";
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
-function Table({ showActions, searchTerm }) {
+function Table({ showActions, showCustomerId, searchTerm }) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  
   const {
     data: customers,
     error: customersError,
     isLoading: customersLoading,
   } = useCustomers();
-
   const {
     data: transactions,
     error: transactionsError,
@@ -22,23 +19,20 @@ function Table({ showActions, searchTerm }) {
   } = useTransactions();
 
   const handleEdit = (id) => {
-    setIsLoading(true);
     navigate(`/AddTrans?customerId=${id}`);
-    setIsLoading(false);
   };
 
   const handleDelete = async (transactionId) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
-      setIsLoading(true);
       await fetch(`http://localhost:4000/transactions/${transactionId}`, {
         method: "DELETE",
       });
+
       refetchTransactions();
-      setIsLoading(false);
     }
   };
 
-  if (customersLoading || transactionsLoading || isLoading) {
+  if (customersLoading || transactionsLoading) {
     return <LoadingSpinner />;
   }
 
@@ -60,14 +54,20 @@ function Table({ showActions, searchTerm }) {
     };
   });
 
+  const filteredData = combinedData.filter((entry) => {
+    const nameMatch = entry.customerName.toLowerCase().includes(searchTerm.toLowerCase());
+    const amountMatch = entry.amount.toString().includes(searchTerm);
+    return nameMatch || amountMatch;
+  });
+
   return (
     <div className="Table vh-100">
-      <div className="row">
-        <div className="col-md-12">
+      <div className="row ">
+        <div className="col-md-12 ">
           <table className="table text-center brd-rad">
             <thead className="border">
               <tr>
-                <th scope="col">{showActions ? "TransactionId" : "CustomerId"}</th>
+                <th scope="col">{showCustomerId ? "CustomerId" : "TransactionId"}</th>
                 <th scope="col">Name</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Date</th>
@@ -80,9 +80,9 @@ function Table({ showActions, searchTerm }) {
               </tr>
             </thead>
             <tbody>
-              {combinedData.map((entry) => (
+              {filteredData.map((entry) => (
                 <tr key={entry.id}>
-                  <th scope="row">{entry.id}</th>
+                  <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
                   <td>{entry.customerName}</td>
                   <td>{entry.amount}</td>
                   <td>{new Date(entry.date).toLocaleDateString()}</td>

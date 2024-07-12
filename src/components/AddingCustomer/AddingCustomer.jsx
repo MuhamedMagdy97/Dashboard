@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function AddingCustomer() {
   const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -11,22 +14,18 @@ function AddingCustomer() {
 
   const handleAddCustomer = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const response = await fetch("http://localhost:4000/customers");
     const customers = await response.json();
 
-    // Get the highest existing numeric ID
     const maxId = customers.reduce((max, customer) => {
       const id = parseInt(customer.id, 10);
       return id > max ? id : max;
     }, 0);
 
-    // New ID will be the highest existing ID + 1
     const newId = (maxId + 1).toString();
-    const newCustomer = {
-      id: newId,
-      name: name,
-    };
+    const newCustomer = { id: newId, name: name };
 
     await fetch("http://localhost:4000/customers", {
       method: "POST",
@@ -50,11 +49,17 @@ function AddingCustomer() {
       body: JSON.stringify(newTransaction),
     });
 
-    navigate("/customers");
+    // Simulate loading for at least 1 second
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate("/customers");
+    }, 1000); // 1 second delay
   };
 
+  if (isLoading) return <LoadingSpinner />;
+
   return (
-    <div className="container">
+    <div className="container vh-100">
       <h3 className="text-center text-main my-3 h1">Adding Customer</h3>
       <div className="row mb-3">
         <div className="col-md-6">

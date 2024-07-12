@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; // Import the spinner
 
 function AddTrans() {
   const [searchParams] = useSearchParams();
@@ -8,12 +9,14 @@ function AddTrans() {
   const [customerName, setCustomerName] = useState("");
   const [customerAmount, setCustomerAmount] = useState("");
   const [error, setError] = useState("");
-  
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [isLoading, setIsLoading] = useState(false); // Loading state
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomer = async () => {
       if (customerId) {
+        setIsLoading(true); // Start loading
         const response = await fetch(`http://localhost:4000/customers/${customerId}`);
         if (response.ok) {
           const customerData = await response.json();
@@ -21,6 +24,7 @@ function AddTrans() {
         } else {
           setError("Customer not found");
         }
+        setIsLoading(false); // Stop loading
       }
     };
     fetchCustomer();
@@ -28,8 +32,6 @@ function AddTrans() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Validate inputs
     if (!customerId.trim() || !customerName.trim() || !customerAmount.trim()) {
       setError("All fields are required");
       return;
@@ -39,7 +41,8 @@ function AddTrans() {
     const transactionUrl = `http://localhost:4000/transactions`;
 
     try {
-      // Update customer data
+      setIsLoading(true); // Start loading
+
       await fetch(apiUrl, {
         method: "PUT",
         headers: {
@@ -48,7 +51,6 @@ function AddTrans() {
         body: JSON.stringify({ name: customerName }),
       });
 
-      // Create new transaction
       const newTransaction = {
         customer_id: customerId,
         date: new Date().toISOString(),
@@ -63,23 +65,25 @@ function AddTrans() {
         body: JSON.stringify(newTransaction),
       });
 
-      // Clear form and errors after successful update
       setCustomerId("");
       setCustomerName("");
       setCustomerAmount("");
       setError("");
 
-      // Navigate to Home after successful edit
       navigate("/");
 
     } catch (error) {
       setError("Failed to update customer data");
       console.error("Error updating customer data:", error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
+  if (isLoading) return <LoadingSpinner />; // Show spinner if loading
+
   return (
-    <div className="container">
+    <div className="container vh-100">
       <h3 className="text-center text-main my-3 h1">
         Adding Transaction for Customer
       </h3>

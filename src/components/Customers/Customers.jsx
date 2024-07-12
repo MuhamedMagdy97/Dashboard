@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Table from "../Table/Table";
 import Search from "../Search/Search";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function Customers() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAddCustomer = () => {
@@ -14,6 +16,8 @@ function Customers() {
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="container Customers">

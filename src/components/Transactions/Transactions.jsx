@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import Table from '../Table/Table';
 import Search from '../Search/Search';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 function Transactions() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="container Customers vh-100">
