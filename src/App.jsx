@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home/Home";
 import Layout from "./components/Layout/Layout";
@@ -15,7 +19,7 @@ function App() {
       element: <Layout />,
       children: [
         {
-          path: "/",
+          index: true,
           element: <Home />,
         },
         {
@@ -37,6 +41,10 @@ function App() {
         {
           path: "/Charts",
           element: <Charts />,
+        },
+        {
+          path: "*",
+          element: <Navigate to="/" />,
         },
       ],
     },
