@@ -52,6 +52,19 @@ function Navbar() {
                 Transactions
               </Link>
             </li>
+            <li
+              className={`nav-item ${
+                selected.startsWith("/Charts") ? "act" : ""
+              }`}
+            >
+              <Link
+                className="nav-link"
+                to="/Charts"
+                onClick={() => setSelected("/Charts")}
+              >
+                Charts
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
