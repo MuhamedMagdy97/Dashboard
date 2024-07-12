@@ -1,63 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 function AddTrans() {
-  const [customerId, setCustomerId] = useState("");
+  const [searchParams] = useSearchParams();
+  const customerIdFromParams = searchParams.get("customerId") || "";
+  const [customerId, setCustomerId] = useState(customerIdFromParams);
   const [customerName, setCustomerName] = useState("");
   const [customerAmount, setCustomerAmount] = useState("");
   const [error, setError] = useState("");
-  const [transactionId, setTransactionId] = useState(1); // Initialize with ID 1
+  
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      if (customerId) {
+        const response = await fetch(`http://localhost:4000/customers/${customerId}`);
+        if (response.ok) {
+          const customerData = await response.json();
+          setCustomerName(customerData.name);
+        } else {
+          setError("Customer not found");
+        }
+      }
+    };
+    fetchCustomer();
+  }, [customerId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Validate inputs
-    if (!customerId.trim()) {
-      setError("Customer ID is required");
+    if (!customerId.trim() || !customerName.trim() || !customerAmount.trim()) {
+      setError("All fields are required");
       return;
     }
 
-    if (!customerName.trim()) {
-      setError("Customer Name is required");
-      return;
-    }
-
-    if (!customerAmount.trim()) {
-      setError("Customer Amount is required");
-      return;
-    }
-
-    // Assuming your API endpoint for updating customer data
     const apiUrl = `http://localhost:4000/customers/${customerId}`;
-    const transactionUrl = `http://localhost:4000/transactions/${transactionId}`;
+    const transactionUrl = `http://localhost:4000/transactions`;
 
     try {
-      // Fetch customer data to check if customerId exists
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        setError("Customer ID does not exist");
-        return;
-      }
-
       // Update customer data
-      const customerData = await response.json();
-      const updatedCustomer = { ...customerData, name: customerName };
       await fetch(apiUrl, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedCustomer),
+        body: JSON.stringify({ name: customerName }),
       });
 
-      // Create new transaction data
+      // Create new transaction
       const newTransaction = {
-        id: transactionId, // Use the current transactionId
         customer_id: customerId,
         date: new Date().toISOString(),
         amount: customerAmount,
       };
 
-      // Post new transaction
       await fetch(transactionUrl, {
         method: "POST",
         headers: {
@@ -72,37 +69,14 @@ function AddTrans() {
       setCustomerAmount("");
       setError("");
 
-      // Increment transactionId for the next transaction
-      setTransactionId(transactionId + 1);
+      // Navigate to Home after successful edit
+      navigate("/");
+
     } catch (error) {
       setError("Failed to update customer data");
       console.error("Error updating customer data:", error);
     }
   };
-
-  // This useEffect ensures that transactionId reflects the latest ID in transactions array on mount
-  useEffect(() => {
-    // Fetch transactions to get the latest ID
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/transactions");
-        if (!response.ok) {
-          setError("Failed to fetch transactions");
-          return;
-        }
-        const transactions = await response.json();
-        if (transactions.length > 0) {
-          // Set transactionId to the last transaction's ID + 1
-          setTransactionId(transactions[transactions.length - 1].id + 1);
-        }
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-        setError("Failed to fetch transactions");
-      }
-    };
-
-    fetchTransactions();
-  }, []);
 
   return (
     <div className="container">
@@ -114,19 +88,6 @@ function AddTrans() {
           <div className="form mt-5 ps-5">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label htmlFor="id" className="form-label">
-                  Customer ID
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="id"
-                  value={customerId}
-                  onChange={(e) => setCustomerId(e.target.value)}
-                  aria-describedby="id"
-                />
-              </div>
-              <div className="mb-3">
                 <label htmlFor="name" className="form-label">
                   Customer Name
                 </label>
@@ -136,7 +97,7 @@ function AddTrans() {
                   id="name"
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  aria-describedby="name"
+                  required
                 />
               </div>
               <div className="mb-3">
@@ -149,7 +110,7 @@ function AddTrans() {
                   id="amount"
                   value={customerAmount}
                   onChange={(e) => setCustomerAmount(e.target.value)}
-                  aria-describedby="amount"
+                  required
                 />
               </div>
               {error && <div className="alert alert-danger">{error}</div>}

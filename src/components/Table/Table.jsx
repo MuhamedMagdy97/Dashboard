@@ -1,23 +1,15 @@
 import React, { useState } from "react";
 import { useCustomers } from "../../Hooks/useCustomers";
 import { useTransactions } from "../../Hooks/useTransactions";
+import { useNavigate } from "react-router-dom";
 
 function Table({ showActions }) {
-  const {
-    data: customers,
-    error: customersError,
-    isLoading: customersLoading,
-  } = useCustomers();
-  const {
-    data: transactions,
-    error: transactionsError,
-    isLoading: transactionsLoading,
-    refetch: refetchTransactions,
-  } = useTransactions();
-
-  const [editId, setEditId] = useState(null); 
+  const navigate = useNavigate();
+  const { data: customers, error: customersError, isLoading: customersLoading } = useCustomers();
+  const { data: transactions, error: transactionsError, isLoading: transactionsLoading, refetch: refetchTransactions } = useTransactions();
+  
   const handleEdit = (id) => {
-    setEditId(id);
+    navigate(`/AddTrans?customerId=${id}`); // Make sure this matches your route path
   };
 
   const handleDelete = async (customerId) => {
@@ -55,10 +47,8 @@ function Table({ showActions }) {
   }
 
   // Combine customer and transaction data
-  const combinedData = transactions.map(function (transaction) {
-    const customer = customers.find(function (cust) {
-      return cust.id === String(transaction.customer_id);
-    });
+  const combinedData = transactions.map((transaction) => {
+    const customer = customers.find((cust) => cust.id === String(transaction.customer_id));
     return {
       ...transaction,
       customerName: customer ? customer.name : "Unknown",
@@ -69,7 +59,7 @@ function Table({ showActions }) {
     <div className="Table">
       <div className="row">
         <div className="col-md-9">
-          <table className="table text-center brd-rad"> 
+          <table className="table text-center brd-rad">
             <thead className="border">
               <tr>
                 <th scope="col">Id</th>
@@ -96,7 +86,7 @@ function Table({ showActions }) {
                       <td>
                         <button
                           className="btn btn-warning"
-                          onClick={() => handleEdit(entry.id)}
+                          onClick={() => handleEdit(entry.customer_id)} // Pass customer_id instead of entry.id
                         >
                           Edit
                         </button>
