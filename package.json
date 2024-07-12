@@ -1,7 +1,8 @@
 {
-  "name": "dashboard",
+  "name": "your-project-name",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://MuhamedMagdy97.github.io/Dashboard",
   "dependencies": {
     "@tanstack/react-query": "^5.51.1",
     "@testing-library/jest-dom": "^5.17.0",
@@ -22,7 +23,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "json-server": "json-server --watch db.json --port 4000"
   },
   "eslintConfig": {
     "extends": [
