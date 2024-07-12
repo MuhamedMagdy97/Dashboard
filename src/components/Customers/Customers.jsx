@@ -11,7 +11,7 @@ function Customers() {
   return (
     <div className="container Customers">
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-9">
           <h3 className="text-center text-main my-3 h1">
             Customers
           </h3>
@@ -19,7 +19,7 @@ function Customers() {
             <h2 className="h4 text-sub p-1">Customer Transactions Table</h2>
            
             <div className="row mb-3">
-              <div className="col-md-6">
+              <div className="col-md-5">
                 <form className="d-flex" role="search">
                   <input
                     className="form-control me-2"
@@ -32,11 +32,12 @@ function Customers() {
                   </button>
                 </form>
               </div>
-              <div className="col-md-2 text-end">
+              <div className="col-md-3 text-end">
                 <button className="btn btn-primary w-100" onClick={handleAddCustomer}>
                   Add customer
                 </button>
               </div>
+              
             </div>
             <Table />
           </div>
