@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; // Import the spinner
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; 
 
 function AddTrans() {
   const [searchParams] = useSearchParams();
@@ -9,14 +9,14 @@ function AddTrans() {
   const [customerName, setCustomerName] = useState("");
   const [customerAmount, setCustomerAmount] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false); 
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomer = async () => {
       if (customerId) {
-        setIsLoading(true); // Start loading
+        setIsLoading(true);
         const response = await fetch(`http://localhost:4000/customers/${customerId}`);
         if (response.ok) {
           const customerData = await response.json();
@@ -24,7 +24,7 @@ function AddTrans() {
         } else {
           setError("Customer not found");
         }
-        setIsLoading(false); // Stop loading
+        setIsLoading(false); 
       }
     };
     fetchCustomer();
@@ -41,7 +41,7 @@ function AddTrans() {
     const transactionUrl = `http://localhost:4000/transactions`;
 
     try {
-      setIsLoading(true); // Start loading
+      setIsLoading(true); 
 
       await fetch(apiUrl, {
         method: "PUT",
@@ -76,11 +76,11 @@ function AddTrans() {
       setError("Failed to update customer data");
       console.error("Error updating customer data:", error);
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     }
   };
 
-  if (isLoading) return <LoadingSpinner />; // Show spinner if loading
+  if (isLoading) return <LoadingSpinner />; 
 
   return (
     <div className="container vh-100">

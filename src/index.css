@@ -37,8 +37,8 @@ body {
 .layout {
   background: linear-gradient(105.37deg, #d8b5ff 0%, #1eae98 100%);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .layout-glass {
@@ -48,6 +48,12 @@ body {
   border-radius: 2rem;
   background-color: var(--glass);
   overflow: hidden;
+  flex: 1;
+  padding: 20px;
+}
+
+.table-responsive {
+  overflow-x: auto;
 }
 
 .container-nav {
@@ -126,6 +132,7 @@ tr {
 
 @media (max-width: 768px) {
   .navbar {
+    display: flex;
     position: relative;
     width: 100%;
   }
@@ -136,9 +143,33 @@ tr {
 
   .navbar-collapse {
     display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .navbar-collapse.show {
-    display: block;
+    display: flex;
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .nav-item {
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column; 
+  }
+  .tbl {
+    margin: 0;
   }
 }

@@ -27,7 +27,6 @@ function Table({ showActions, showCustomerId, searchTerm }) {
       await fetch(`http://localhost:4000/transactions/${transactionId}`, {
         method: "DELETE",
       });
-
       refetchTransactions();
     }
   };
@@ -61,57 +60,53 @@ function Table({ showActions, showCustomerId, searchTerm }) {
   });
 
   return (
-    <div className="Table vh-100">
-      <div className="row ">
-        <div className="col-md-12 ">
-          <table className="table text-center brd-rad">
-            <thead className="border">
-              <tr>
-                <th scope="col">{showCustomerId ? "CustomerId" : "TransactionId"}</th>
-                <th scope="col">Name</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Date</th>
-                {showActions && (
-                  <>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((entry) => (
-                <tr key={entry.id}>
-                  <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
-                  <td>{entry.customerName}</td>
-                  <td>{entry.amount}</td>
-                  <td>{new Date(entry.date).toLocaleDateString()}</td>
-                  {showActions && (
-                    <>
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => handleEdit(entry.customer_id)}
-                        >
-                          Edit
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-outline-danger"
-                          onClick={() => handleDelete(entry.id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div className="table-responsive">
+      <table className="table text-center brd-rad">
+        <thead className="border">
+          <tr>
+            <th scope="col">{showCustomerId ? "CustomerId" : "TransactionId"}</th>
+            <th scope="col">Name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+            {showActions && (
+              <>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </>
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((entry) => (
+            <tr key={entry.id}>
+              <th scope="row">{showCustomerId ? entry.customer_id : entry.id}</th>
+              <td>{entry.customerName}</td>
+              <td>{entry.amount}</td>
+              <td>{new Date(entry.date).toLocaleDateString()}</td>
+              {showActions && (
+                <>
+                  <td>
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => handleEdit(entry.customer_id)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-outline-danger"
+                      onClick={() => handleDelete(entry.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -7,7 +7,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setSelected(location.pathname); 
+    setSelected(location.pathname);
   }, [location.pathname]);
 
   const toggleNavbar = () => {
@@ -25,32 +25,63 @@ function Navbar() {
         <button
           className="navbar-toggler"
           type="button"
-          onClick={toggleNavbar} 
+          onClick={toggleNavbar}
           aria-controls="navbarNav"
           aria-expanded={isOpen}
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className={`navbar-collapse mt-5 ${isOpen ? "show" : ""}`} id="navbarNav">
-          <ul className="navbar-nav flex-column">
+        <div
+          className={`navbar-collapse mt-5 ${isOpen ? "show" : ""}`}
+          id="navbarNav"
+        >
+          <ul className="navbar-nav">
             <li className={`nav-item ${selected === "/" ? "act" : ""}`}>
-              <Link className="nav-link" to="/" onClick={() => setSelected("/")}>
+              <Link
+                className="nav-link"
+                to="/"
+                onClick={() => setSelected("/")}
+              >
                 Dashboard
               </Link>
             </li>
-            <li className={`nav-item ${selected.startsWith("/customers") ? "act" : ""}`}>
-              <Link className="nav-link" to="/customers" onClick={() => setSelected("/customers")}>
+            <li
+              className={`nav-item ${
+                selected.startsWith("/customers") ? "act" : ""
+              }`}
+            >
+              <Link
+                className="nav-link"
+                to="/customers"
+                onClick={() => setSelected("/customers")}
+              >
                 Customers
               </Link>
             </li>
-            <li className={`nav-item ${selected.startsWith("/transactions") ? "act" : ""}`}>
-              <Link className="nav-link" to="/transactions" onClick={() => setSelected("/transactions")}>
+            <li
+              className={`nav-item ${
+                selected.startsWith("/transactions") ? "act" : ""
+              }`}
+            >
+              <Link
+                className="nav-link"
+                to="/transactions"
+                onClick={() => setSelected("/transactions")}
+              >
                 Transactions
               </Link>
             </li>
-            <li className={`nav-item ${selected.startsWith("/charts") ? "act" : ""}`}>
-              <Link className="nav-link" to="/charts" onClick={() => setSelected("/charts")}>
+            <li
+              className={`nav-item ${
+                selected.startsWith("/charts") ? "act" : ""
+              }`}
+            >
+              <Link
+                className="nav-link"
+                to="/charts"
+                onClick={() => setSelected("/charts")}
+              >
                 Charts
               </Link>
             </li>

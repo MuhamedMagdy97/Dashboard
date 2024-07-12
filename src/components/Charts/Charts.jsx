@@ -63,7 +63,7 @@ function Charts() {
             }
             return newAmounts;
           });
-        }, 1); // Adjust speed of the animation
+        }, 1); 
       });
 
       return () => timers.forEach((timer) => clearInterval(timer)); // Cleanup
