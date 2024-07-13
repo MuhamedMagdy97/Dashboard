@@ -39,6 +39,6 @@ The application uses a JSON server as its backend.
 
 Live Demo
 You can view the live dashboard on GitHub Pages:
-Dashboard Route Task
+[Dashboard Route Task](https://muhamedmagdy97.github.io/)
 
 Remember to run the JSON server on port 4000 for full functionality!
