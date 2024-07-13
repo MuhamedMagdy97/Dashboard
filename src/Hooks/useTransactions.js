@@ -1,10 +1,12 @@
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery , } from '@tanstack/react-query';
 
 async function fetchTransactions() {
+  
   const response = await fetch('http://localhost:4000/transactions');
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error('Oh No Please check Your Connection ');
+
   }
   return response.json();
 }

@@ -1,4 +1,5 @@
 :root {
+ 
   --main-text-color: #5e4b8a;
   --black: #242d49;
   --gray: #6378b6;
@@ -31,7 +32,7 @@ body {
   width: 250px;
 }
 .navbar-toggler {
-  display: none; /* Hide toggler on larger screens */
+  display: none; 
 }
 
 .layout {
@@ -110,6 +111,7 @@ tr {
 }
 
 .loading-spinner {
+  padding-top: 18%;
   position: fixed;
   top: 50%;
   left: 50%;

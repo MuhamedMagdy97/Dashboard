@@ -1,11 +1,16 @@
 import React from "react";
-import { ThreeDots } from "react-loader-spinner";
+import { InfinitySpin} from "react-loader-spinner";
 
 const LoadingSpinner = () => {
   return (
-    <div className="loading-spinner">
-      <ThreeDots color="#00BFFF" height={100} width={100} />
-    </div>
+    <>
+    <div className="text-center loading-spinner">   <InfinitySpin
+  visible={true}
+  width="200"
+  color="#350a99"
+  ariaLabel="infinity-spin-loading"
+  /></div>
+    </>
   );
 };
 

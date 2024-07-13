@@ -36,11 +36,11 @@ function Table({ showActions, showCustomerId, searchTerm }) {
   }
 
   if (customersError) {
-    return <div>Error fetching customers: {customersError.message}</div>;
+    return <div className="text-center">{customersError.message}</div>;
   }
 
   if (transactionsError) {
-    return <div>Error fetching transactions: {transactionsError.message}</div>;
+    return <div className="text-center">{transactionsError.message}</div>;
   }
 
   const combinedData = transactions.map((transaction) => {
