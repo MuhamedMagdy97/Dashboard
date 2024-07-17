@@ -1,0 +1,104 @@
+{
+  "customers": [
+    {
+      "name": "Ahmed Ali",
+      "id": "1"
+    },
+    {
+      "name": "Mina Adel",
+      "id": "3"
+    },
+    {
+      "id": "4",
+      "name": "Sarah Reda"
+    },
+    {
+      "name": "Mohamed Sayed",
+      "id": "5"
+    },
+    {
+      "name": "Muhamed Magdy",
+      "id": "6"
+    },
+    {
+      "name": "Hossam",
+      "id": "13"
+    },
+    {
+      "id": "14",
+      "name": "Magdy"
+    },
+    {
+      "id": "15",
+      "name": "Magdy"
+    },
+    {
+      "id": "16",
+      "name": "Magdy"
+    },
+    {
+      "id": "17",
+      "name": "Muahmed"
+    },
+    {
+      "name": "Mohamed Magdy",
+      "id": "18"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1",
+      "customer_id": 1,
+      "date": "2022-01-01",
+      "amount": 1000
+    },
+    {
+      "id": "2",
+      "customer_id": 1,
+      "date": "2022-01-02",
+      "amount": 2000
+    },
+    {
+      "id": "4",
+      "customer_id": 3,
+      "date": "2022-01-01",
+      "amount": 500
+    },
+    {
+      "id": "6",
+      "customer_id": 4,
+      "date": "2022-01-01",
+      "amount": 750
+    },
+    {
+      "id": "7",
+      "customer_id": 3,
+      "date": "2022-01-02",
+      "amount": 1250
+    },
+    {
+      "id": "8",
+      "customer_id": 5,
+      "date": "2022-01-01",
+      "amount": 2500
+    },
+    {
+      "id": "9",
+      "customer_id": 5,
+      "date": "2022-01-02",
+      "amount": 875
+    },
+    {
+      "id": "e53b",
+      "customer_id": "18",
+      "amount": 0,
+      "date": "2024-07-17T11:42:33.688Z"
+    },
+    {
+      "id": "c6cf",
+      "customer_id": "18",
+      "date": "2024-07-17T11:42:42.595Z",
+      "amount": "25300"
+    }
+  ]
+}
