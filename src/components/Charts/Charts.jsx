@@ -63,7 +63,7 @@ function Charts() {
             }
             return newAmounts;
           });
-        }, 1); 
+        }, 1);
       });
 
       return () => timers.forEach((timer) => clearInterval(timer)); // Cleanup
